@@ -7,25 +7,25 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-GENAI_API_KEY = os.getenv('GENAI_API_KEY')
 TOKEN = os.getenv('BOT_TOKEN')
-
-MY_GUILD = discord.Object(id=1016759347583393882)
+GENAI_API_KEY = os.getenv('GENAI_API_KEY')
+MY_GUILD = discord.Object(id=os.getenv('GUILD_ID'))
 
 genai.configure(api_key=GENAI_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
 
-class MyClient(discord.Client):
+class Bot(discord.Client):
     def __init__(self, *, intents: discord.Intents):
         super().__init__(intents=intents)
         self.tree = app_commands.CommandTree(self)
 
     async def setup_hook(self):
+        # Used to instantly sync commands to test guild, remove function in prod
         self.tree.copy_global_to(guild=MY_GUILD)
         await self.tree.sync(guild=MY_GUILD)
 
 intents = discord.Intents.all()
-client = MyClient(intents=intents)
+client = Bot(intents=intents)
 
 async def summarize_messages (chat, variation=None) :
 
