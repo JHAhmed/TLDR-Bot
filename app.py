@@ -1,13 +1,18 @@
-from typing import Optional, Literal
 
+import discord
 from openai import OpenAI
 from discord import app_commands
 
-import discord
 import os
+from enum import Enum
 from dotenv import load_dotenv
+from typing import Optional, Literal
 
 load_dotenv()
+
+class Provider(Enum): # Not being used currently
+    OPENAI = 'openai'
+    GOOGLE = 'google'
 
 TOKEN = os.getenv('BOT_TOKEN')
 MY_GUILD = discord.Object(id=os.getenv('GUILD_ID'))
